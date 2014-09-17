@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-12">
+    <input data-braintree-name="name" type="text" class="text_field" placeholder="<%= t("braintree_payments.edit.cardholder_name") %>" >
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-9">
+    <input data-braintree-name="number" type="text" class="text_field" placeholder="<%= t("braintree_payments.edit.credit_card_number") %>" >
+  </div>
+  <div class="col-3">
+    <input data-braintree-name="cvv" type="text" class="text_field" placeholder="<%= t("braintree_payments.edit.cvv") %>" >
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <label><%= t("braintree_payments.edit.exp") %>
+      <select data-braintree-name="expiration_month">
+        <%= options_for_select(credit_card_expiration_month_options) %>
+      </select>
+      /
+      <select data-braintree-name="expiration_year">
+        <%= options_for_select(credit_card_expiration_year_options) %>
+      </select>
+    </label>
+  </div>
+</div>

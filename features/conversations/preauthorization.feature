@@ -23,6 +23,7 @@ Feature: Preauthorized payment
       And Braintree escrow release is mocked
 
      When I buy that listing
+     And open Pry
      Then I should see payment details form for Braintree
 
      When I fill in my payment details for Braintree
