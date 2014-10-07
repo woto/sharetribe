@@ -22,6 +22,7 @@
 #
 
 class BraintreePaymentGateway < PaymentGateway
+  attr_accessible :community_id, :type, :braintree_environment, :braintree_merchant_id, :braintree_public_key, :braintree_client_side_encryption_key, :gateway_comission_percentage, :gateway_comission_fixed_cents, :gateway_comission_fixed_currency
 
   def can_receive_payments?(person)
     braintree_account = person.braintree_account
