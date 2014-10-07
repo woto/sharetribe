@@ -24,6 +24,21 @@
 class BraintreeAccount < ActiveRecord::Base
   attr_accessor :account_number # Not persisted, only sent to Braintree
 
+  attr_accessible :first_name,
+    :last_name,
+    :person_id,
+    :email,
+    :phone,
+    :address_street_address,
+    :address_postal_code,
+    :address_locality,
+    :address_region,
+    :date_of_birth,
+    :routing_number,
+    :hidden_account_number,
+    :status,
+    :community_id
+
   belongs_to :person
   belongs_to :community
 
