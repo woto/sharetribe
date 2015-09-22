@@ -26,6 +26,7 @@ Kassi::Application.routes.draw do
   get '/webhooks/braintree' => 'braintree_webhooks#challenge'
   post '/webhooks/braintree' => 'braintree_webhooks#hooks'
   post '/webhooks/paypal_ipn' => 'paypal_ipn#ipn_hook', as: :paypal_ipn_hook
+  post '/webhooks/plan_subscriptions' => 'plan_subscription_webhook_messages#webhook'
 
   post '/bounces' => 'amazon_bounces#notification'
 
