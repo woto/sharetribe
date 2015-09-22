@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20150902103231) do
+ActiveRecord::Schema.define(:version => 20150922115031) do
 
   create_table "auth_tokens", :force => true do |t|
     t.string   "token"
@@ -863,11 +863,16 @@ ActiveRecord::Schema.define(:version => 20150902103231) do
   end
 
   add_index "people", ["authentication_token"], :name => "index_people_on_authentication_token"
-  add_index "people", ["email"], :name => "index_people_on_email", :unique => true
   add_index "people", ["facebook_id"], :name => "index_people_on_facebook_id", :unique => true
   add_index "people", ["id"], :name => "index_people_on_id"
   add_index "people", ["reset_password_token"], :name => "index_people_on_reset_password_token", :unique => true
   add_index "people", ["username"], :name => "index_people_on_username", :unique => true
+
+  create_table "plan_subscription_webhook_messages", :force => true do |t|
+    t.text     "body"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "prospect_emails", :force => true do |t|
     t.string   "email"
