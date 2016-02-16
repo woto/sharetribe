@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160209183917) do
+ActiveRecord::Schema.define(version: 20160214195501) do
 
   create_table "auth_tokens", force: :cascade do |t|
     t.string   "token",            limit: 255
@@ -352,16 +352,18 @@ ActiveRecord::Schema.define(version: 20160209183917) do
   add_index "custom_field_values", ["type"], name: "index_custom_field_values_on_type", using: :btree
 
   create_table "custom_fields", force: :cascade do |t|
-    t.string   "type",           limit: 255
-    t.integer  "sort_priority",  limit: 4
-    t.boolean  "search_filter",              default: false, null: false
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
-    t.integer  "community_id",   limit: 4
-    t.boolean  "required",                   default: true
-    t.float    "min",            limit: 24
-    t.float    "max",            limit: 24
-    t.boolean  "allow_decimals",             default: false
+    t.string   "type",              limit: 255
+    t.integer  "sort_priority",     limit: 4
+    t.boolean  "search_filter",                 default: false, null: false
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
+    t.integer  "community_id",      limit: 4
+    t.boolean  "required",                      default: true
+    t.float    "min",               limit: 24
+    t.float    "max",               limit: 24
+    t.boolean  "allow_decimals",                default: false
+    t.string   "boolean_operation", limit: 255
+    t.string   "boolean_operator",  limit: 255
   end
 
   add_index "custom_fields", ["community_id"], name: "index_custom_fields_on_community_id", using: :btree
@@ -889,6 +891,14 @@ ActiveRecord::Schema.define(version: 20160209183917) do
     t.boolean  "is_organization"
     t.string   "organization_name",                  limit: 255
     t.boolean  "deleted",                                          default: false
+    t.text     "education",                          limit: 65535
+    t.text     "experience",                         limit: 65535
+    t.text     "facts",                              limit: 65535
+    t.string   "skype",                              limit: 255
+    t.text     "additional",                         limit: 65535
+    t.string   "undergraduate_school",               limit: 255
+    t.string   "graduate_school",                    limit: 255
+    t.integer  "grade_year",                         limit: 4
   end
 
   add_index "people", ["authentication_token"], name: "index_people_on_authentication_token", using: :btree
@@ -897,6 +907,24 @@ ActiveRecord::Schema.define(version: 20160209183917) do
   add_index "people", ["id"], name: "index_people_on_id", using: :btree
   add_index "people", ["reset_password_token"], name: "index_people_on_reset_password_token", unique: true, using: :btree
   add_index "people", ["username"], name: "index_people_on_username", unique: true, using: :btree
+
+  create_table "profile_setting_translations", force: :cascade do |t|
+    t.integer  "profile_setting_id", limit: 4
+    t.string   "locale",             limit: 255
+    t.string   "name",               limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "profile_setting_translations", ["profile_setting_id"], name: "index_profile_setting_translations_on_profile_setting_id", using: :btree
+
+  create_table "profile_settings", force: :cascade do |t|
+    t.integer  "community_id", limit: 4
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "profile_settings", ["community_id"], name: "index_profile_settings_on_community_id", using: :btree
 
   create_table "prospect_emails", force: :cascade do |t|
     t.string   "email",      limit: 255

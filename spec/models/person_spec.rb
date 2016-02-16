@@ -40,11 +40,11 @@
 #  is_organization                    :boolean
 #  organization_name                  :string(255)
 #  deleted                            :boolean          default(FALSE)
-#  education                          :text
-#  experience                         :text
-#  facts                              :text
+#  education                          :text(65535)
+#  experience                         :text(65535)
+#  facts                              :text(65535)
 #  skype                              :string(255)
-#  additional                         :text
+#  additional                         :text(65535)
 #  undergraduate_school               :string(255)
 #  graduate_school                    :string(255)
 #  grade_year                         :integer
