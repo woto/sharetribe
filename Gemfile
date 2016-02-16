@@ -7,8 +7,8 @@ gem 'rails', '4.2.5.1'
 gem 'coffee-rails', "~> 4.0.1"
 gem 'uglifier', "~> 2.7.2"
 
-gem 'sass-rails', '~> 4.0.0'
-gem 'compass-rails', '~> 2.0'
+gem 'sass-rails'
+gem 'compass-rails'
 
 # Requiring 'compass' gem directly is not normally needed,
 # 'compass-rails' already does that.
@@ -16,7 +16,7 @@ gem 'compass-rails', '~> 2.0'
 # However, we want to have compass version which is at least 0.13,
 # because it fixes a bug that caused compass helpers to override
 # important Rails asset helpers
-gem 'compass', '~> 0.13.alpha'
+gem 'compass'
 
 gem 'jquery-rails', '3.1.3'
 
@@ -27,7 +27,7 @@ gem "passenger", "~> 5.0.18"
 
 gem "mysql2", "~> 0.3.14"
 gem 'haml', "~> 4.0.5"
-gem 'sass', "  ~> 3.2.9"
+gem 'sass'
 gem 'rest-client', '~> 1.8.0'
 
 # Updating paperclip caused problems with delayed paperclip
@@ -154,3 +154,6 @@ group :development, :test do
   gem 'pry-nav', '~> 0.2.3'
   gem 'pry-stack_explorer', '~> 0.4.9.1'
 end
+
+gem 'bootstrap-sass'
+gem "font-awesome-rails"
