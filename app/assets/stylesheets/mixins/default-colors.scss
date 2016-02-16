@@ -31,21 +31,21 @@
   -----------------------------------------
 */
 
-$primary-hue: 25;
+$primary-hue: 205;
 $notification-hue: 80;
 $error-hue: 0;
 
-$background:  hsl($primary-hue, 0%, 100%);
-$highlight:   hsl($primary-hue, 0%, 91%);
-$border:      hsl($primary-hue, 0%, 76.4%);
+$background:  #efefef;
+$highlight:   #F7F7F7;
+$border:      #ccc;
 
-$aside:       hsl($primary-hue, 0%, 50%);
-$light-body:  hsl($primary-hue, 0%, 28%);
-$body:        hsl($primary-hue, 0%, 23.6%);
-$emphasis:    hsl($primary-hue, 0%, 9%);
+$link:        #ff4081;
+$link2:       blue;
 
-$link:        #a64c5d;
-$link2:       #00a26c;
+$aside:       adjust-saturation($link, 50%);
+$light-body:  hsl($primary-hue, 39%, 28%);
+$body:        hsl($primary-hue, 12%, 23.6%);
+$emphasis:    purple;
 
 $success-green: #19b400;
 
@@ -64,7 +64,7 @@ $square-logo-lowres-url: "logos/mobile/default.png";
 $square-logo-highres-url: "logos/mobile/default-highres.png";
 $cover-photo-height: 453;
 $cover-photo-mobile-height: 365;
-$small-cover-photo-height: 96;
+$small-cover-photo-height: 66;
 $small-cover-photo-mobile-height: 66;
 $lander-content-top: -15.25;
 $lander-content-top-mobile: -14;

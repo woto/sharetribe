@@ -6,7 +6,16 @@
     %span.profile-title= @person.name(@current_community) + (@community_customization && @community_customization.storefront_label ? @community_customization.storefront_label : "")
 
 .row
-  .col-8
+
+  .col-3
+    .row
+      .people-image
+        = huge_avatar_thumb(@person)
+
+    .row
+      .profile-action-buttons-desktop
+        = render :partial => "profile_action_buttons"
+  .col-9
 
     .row.relative
       .people-image-mobile
@@ -62,15 +71,6 @@
           - if received_testimonials.size > 0
             #profile-testimonials-list
               = render :partial => "testimonials", :locals => {:received_testimonials => received_testimonials, :limit => 3}
-
-  .col-4
-    .row
-      .people-image
-        = huge_avatar_thumb(@person)
-
-    .row
-      .profile-action-buttons-desktop
-        = render :partial => "profile_action_buttons"
 
 - content_for :extra_javascript do
   :javascript

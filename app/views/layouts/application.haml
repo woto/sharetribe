@@ -20,10 +20,10 @@
             .lander-content.marketplace-lander-content
               = yield :title_header
       - with_small_cover_photo do
-        .coverimage
-          %figure.marketplace-cover-small.fluidratio
-          .coverimage-fade{:class => yield(:coverfade_class)}
-            %figure.marketplace-cover-small-fade.fluidratio
+        /.coverimage
+        /  %figure.marketplace-cover-small.fluidratio
+        /  .coverimage-fade{:class => yield(:coverfade_class)}
+        /    %figure.marketplace-cover-small-fade.fluidratio
         .title-container
           .title-header-wrapper
             .marketplace-title-header
@@ -31,8 +31,63 @@
 
     %article.page-content
       .wrapper
-        = render :partial => "layouts/notifications"
-        = yield
+        .wrapper-inner
+          = render :partial => "layouts/notifications"
+          = yield
+
+    #footer.page-content{style: 'background: #444; margin-top: 3rem'}
+      .wrapper{style: 'background: #444;'}
+        .wrapper-inner{style: 'border: none; background: #444; padding: 1em 0 1em 0; font-size: smaller; font-family: Verdana'}
+          .row{style: 'margin: 0'}
+            .col-5
+              %ul{style: 'padding: 0; list-style-type: none;' }
+                %li
+                  = link_to new_user_feedback_path do
+                    = icon_tag("feedback", ["icon-with-text"])
+                    = t("header.contact_us")
+
+                %li
+                  = link_to "/" do
+                    = icon_tag("home", ["icon-with-text"])
+                    = t("header.home")
+
+                %li
+                  = link_to about_infos_path do
+                    = icon_tag("information", ["icon-with-text"])
+                    = t("header.about")
+
+                %li
+                  = link_to new_listing_path, :class => "hidden-tablet" do
+                    = icon_tag("new_listing", ["icon-with-text"])
+                    = t("homepage.index.post_new_listing")
+
+                - with_invite_link do
+                  %li
+                    = link_to new_invitation_path do
+                      = icon_tag("invite", ["icon-with-text"])
+                      = t("header.invite")
+
+                - Maybe(@current_community).menu_links.each do |menu_links|
+                  - menu_links.each do |menu_link|
+                    = link_to menu_link.url(I18n.locale), :target => "_blank" do
+                      = icon_tag("redirect", ["icon-with-text"])
+                      = menu_link.title(I18n.locale)
+
+                .hidden-desktop
+                  - with_available_locales do |locales|
+                    .toggle-menu-title
+                      = t("layouts.global-header.select_language")
+
+                    = render :partial => "layouts/locale_select", :collection => locales, :as => :loc_array
+
+            .col-7
+              %ul{style: 'padding: 0; list-style-type: none;' }
+                %li
+                  - if @current_user && @current_community && @current_user.has_admin_rights_in?(@current_community)
+                    = link_to edit_details_admin_community_path(@current_community) do
+                      = icon_tag("admin", ["icon-with-text"])
+                      = t("layouts.logged_in.admin")
+
 
   -#
     This is not pretty, but works.

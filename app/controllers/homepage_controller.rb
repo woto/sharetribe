@@ -28,7 +28,7 @@ class HomepageController < ApplicationController
 
     filter_params = {}
 
-    listing_shape_param = params[:transaction_type]
+    listing_shape_param = params[:transaction_type] || 'i-am-a-student'
 
     all_shapes = shapes.get(community_id: @current_community.id)[:data]
     selected_shape = all_shapes.find { |s| s[:name] == listing_shape_param }
@@ -119,8 +119,7 @@ class HomepageController < ApplicationController
     end
 
     filter_params[:search] = params[:q] if params[:q]
-    filter_params[:custom_dropdown_field_options] = HomepageController.dropdown_field_options_for_search(params)
-    filter_params[:custom_checkbox_field_options] = HomepageController.checkbox_field_options_for_search(params)
+    filter_params[:custom_field_options] = HomepageController.field_options_for_search(params)
 
     filter_params[:price_cents] = filter_range(params[:price_min], params[:price_max])
 
@@ -133,8 +132,7 @@ class HomepageController < ApplicationController
       |_, value| (value == "all" || value == ["all"])
     } # all means the filter doesn't need to be included
 
-    checkboxes = filter_params[:custom_checkbox_field_options].map { |checkbox_field| checkbox_field.merge(type: :selection_group, operator: :and) }
-    dropdowns = filter_params[:custom_dropdown_field_options].map { |dropdown_field| dropdown_field.merge(type: :selection_group, operator: :or) }
+    custom_field_options = filter_params[:custom_field_options].map { |field| field.merge(type: :selection_group, operator: CustomField.find(field[:id]).boolean_operator.to_sym) }
     numbers = numeric_search_params.map { |numeric| numeric.merge(type: :numeric_range) }
 
     search = {
@@ -143,7 +141,7 @@ class HomepageController < ApplicationController
       listing_shape_ids: Array(filter_params[:listing_shape]),
       price_cents: filter_params[:price_cents],
       keywords: filter_params[:search],
-      fields: checkboxes.concat(dropdowns).concat(numbers),
+      fields: custom_field_options.concat(numbers),
       per_page: listings_per_page,
       page: Maybe(params)[:page].to_i.map { |n| n > 0 ? n : 1 }.or_else(1),
       price_min: params[:price_min],
@@ -229,12 +227,8 @@ class HomepageController < ApplicationController
       .map { |key, selected_options| {id: key, value: selected_options.collect(&:id) } }
   end
 
-  def self.dropdown_field_options_for_search(params)
+  def self.field_options_for_search(params)
     options_from_params(params, /^filter_option/)
-  end
-
-  def self.checkbox_field_options_for_search(params)
-    options_from_params(params, /^checkbox_filter_option/)
   end
 
   def shapes

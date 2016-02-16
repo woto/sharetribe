@@ -9,6 +9,7 @@ require File.expand_path('../config_loader', __FILE__)
 
 require File.expand_path('../available_locales', __FILE__)
 
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -46,6 +47,8 @@ module Kassi
     # Add webfonts folder which can contain icons used like fonts
     config.assets.paths << Rails.root.join("app", "assets", "webfonts")
     config.assets.paths << VENDOR_CSS_PATH
+    config.assets.paths << Rails.root.join('/home/woto/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/font-awesome-rails-4.5.0.0/app/assets/stylesheets')
+    
 
     # Define here additional Assset Pipeline Manifests to include to precompilation
     config.assets.precompile += ['markerclusterer.js', 'communities/custom-style-*', 'ss-*', 'modernizr.min.js', 'mercury.js','jquery-1.7.js']

@@ -59,6 +59,7 @@
 //= require payment_math
 //= require dropdown
 //= require jquery.nouislider
+//= require nouislider
 //= require range_filter
 //= require translations
 //= require image_uploader
@@ -73,3 +74,10 @@
 //= require transaction
 //= require listing_form
 //= require_self
+//
+// 4
+//  require bootstrap
+// 3
+//=  require bootstrap-sprockets
+//
+//= require jasny-bootstrap/js/fileinput.js

@@ -191,6 +191,8 @@ Kassi::Application.routes.draw do
           post :order
         end
       end
+      resources :profile_settings
+      resources :profile_custom_fields
       resources :listing_shapes do
         collection do
           post :order
@@ -214,6 +216,12 @@ Kassi::Application.routes.draw do
     resources :community_memberships, :as => :tribe_memberships do
       collection do
         get :access_denied
+      end
+    end
+    namespace :education do
+      resources :requests do
+      end
+      resources :offers do
       end
     end
     resources :listings do

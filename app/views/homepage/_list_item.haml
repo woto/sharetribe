@@ -1,3 +1,7 @@
+%i 
+  - text_with_line_breaks do
+    = Person.find(listing.author.id).description
+
 - frontpage_fragment_cache("list_item", listing) do
   .home-list-item
     - if listing.listing_images.size > 0

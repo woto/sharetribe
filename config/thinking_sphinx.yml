@@ -11,6 +11,7 @@ production:
   ngram_len: 1
   delayed_job_priority: 4
   mysql_ssl_ca: lib/certificates/rds-combined-ca-bundle.pem
+  bin_path: '/usr/local/bin'
 
 staging:
   version: '2.1.8'
@@ -23,6 +24,7 @@ staging:
   ngram_len: 1
   delayed_job_priority: 4
   mysql_ssl_ca: lib/certificates/rds-combined-ca-bundle.pem
+  bin_path: '/usr/local/bin'
 
 development:
   mysql41: 3563
@@ -33,6 +35,7 @@ development:
   ngram_len: 1
   delayed_job_priority: 4
   mysql_ssl_ca: lib/certificates/rds-combined-ca-bundle.pem
+  bin_path: '/usr/local/bin'
 
 test:
   mysql41: 3565
@@ -43,3 +46,4 @@ test:
   ngram_len: 1
   delayed_job_priority: 4
   mysql_ssl_ca: lib/certificates/rds-combined-ca-bundle.pem
+  bin_path: '/usr/local/bin'

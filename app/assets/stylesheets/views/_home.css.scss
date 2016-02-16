@@ -7,7 +7,7 @@
 .home-toolbar {
   @include pie-clearfix;
   margin-bottom: lines(0.5);
-  border-bottom: 1px solid $border;
+  //border-bottom: 1px solid $border;
 
   @include media(tablet) {
     margin-bottom: lines(1);
@@ -43,8 +43,7 @@
   @include button-group-button;
   @include ellipsis;
 
-  // Notice: hard-coded for three buttons
-  width: 33.3%;
+  width: 50%;
 
   @include media(tablet) {
     width: auto;
@@ -375,6 +374,7 @@ $home-list-avatar-padding: lines(0.25);
 
 .home-toolbar-toggle-container {
   margin-bottom: lines(0.5);
+  border-radius: 5px;
 }
 
 #pageless-loader {
@@ -398,6 +398,10 @@ $home-list-avatar-padding: lines(0.25);
     max-height: 180px;
     overflow-y: scroll;
   }
+}
+
+.custom-filter-checkbox-container {
+  margin: 5px;
 }
 
 .custom-filter-checkbox-label {

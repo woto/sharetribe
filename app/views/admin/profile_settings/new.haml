@@ -1,0 +1,17 @@
+-# TODO
+-# content_for :javascript do
+  initialize_admin_category_form_view("#{I18n.locale}", "#new_category");
+  ST.initializeCategoriesSelectionClickHandlers();
+
+- content_for :title_header do
+  %h1
+    = t("layouts.admin.admin")
+    = "-"
+    = t(".new_listing_profile_setting")
+
+= render :partial => "admin/left_hand_navigation", :locals => { :links => admin_links_for(@current_community) }
+
+.left-navi-section
+  = form_for [:admin, @profile_setting] do |form|
+    = render :partial => "admin/profile_settings/form/profile_setting_name", :locals => { :form => form }
+    = render :partial => "admin/profile_settings/form/buttons", :locals => { :form => form }

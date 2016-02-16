@@ -73,8 +73,10 @@ class Listing < ActiveRecord::Base
   has_many :conversations
   has_many :comments, :dependent => :destroy
   has_many :custom_field_values, :dependent => :destroy
-  has_many :custom_dropdown_field_values, :class_name => "DropdownFieldValue"
-  has_many :custom_checkbox_field_values, :class_name => "CheckboxFieldValue"
+  has_many :option_field_values
+  #has_many :opts, :class_name => "CustomFieldValue", :source => :selected_options
+  #has_many :custom_dropdown_field_values, :class_name => "DropdownFieldValue"
+  #has_many :custom_checkbox_field_values, :class_name => "CheckboxFieldValue"
 
   has_one :location, :dependent => :destroy
   has_one :origin_loc, -> { where('location_type = ?', 'origin_loc') }, :class_name => "Location", :dependent => :destroy

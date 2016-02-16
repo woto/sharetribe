@@ -1,0 +1,10 @@
+= link_to edit_admin_profile_setting_path(profile_setting), :class => "profile-setting-action-edit", :id => "edit_profile_setting_#{profile_setting.id}" do
+  = icon_tag("edit", ["icon-fix"])
+- remove_html_opts = { class: "profile-setting-action-remove", id: "remove_profile_setting_#{profile_setting.id}" }
+
+- if profile_setting.remove_needs_caution?
+  = link_to remove_admin_profile_setting_path(profile_setting), remove_html_opts do
+    = icon_tag("cross", ["icon-fix"])
+- else
+  = link_to admin_profile_setting_path(profile_setting), remove_html_opts.merge(:method => :delete, data: {:confirm => t("admin.categories.index.remove_profile_setting_confirmation", {profile_setting_name: profile_setting.display_name(I18n.locale)})}) do
+    = icon_tag("cross", ["icon-fix"])

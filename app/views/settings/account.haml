@@ -9,7 +9,7 @@
 #person_settings_form.left-navi-section.settings-section.account-settings
   -# Username
   .account-settings-row
-    .ss-key.account-settings-icon
+    = icon_tag("key", ['account-settings-icon'])
     .account-settings-text
       %b
         = username_label + ":"
@@ -18,7 +18,7 @@
   -# Email
   .account-settings-row
     = form_for @person, :html => {:id => 'email_form'} do |form|
-      .ss-mail.account-settings-icon
+      = icon_tag("mail", ['account-settings-icon'])
       .account-settings-text#account_email_content
         .account-settings-title
           %b
@@ -101,7 +101,7 @@
 
   -# Password
   .account-settings-row
-    .ss-lock.account-settings-icon
+    = icon_tag("lock", ['account-settings-icon'])
     .account-settings-text#account_password_content
       %b
         = t("common.password") + ":"
@@ -115,7 +115,7 @@
 
   -# Account removal
   .account-settings-row
-    .ss-deleteuser.account-settings-icon
+    = icon_tag("deleteuser", ['account-settings-icon'])
     .account-settings-text
       %b
         = t("settings.account.delete_account")

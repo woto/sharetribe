@@ -487,6 +487,11 @@ function initialize_listing_map(listings, community_location_lat, community_loca
   var myOptions = {
     zoom: 13,
     maxZoom: 17,
+    scrollwheel: false,
+    navigationControl: false,
+    mapTypeControl: false,
+    //scaleControl: false,
+    draggable: false,
     mapTypeId: google.maps.MapTypeId.ROADMAP
   };
   map = new google.maps.Map(document.getElementById("map-canvas"), myOptions);

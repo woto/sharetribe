@@ -22,12 +22,12 @@
 
     .account-settings-text {
       margin-left: lines(1.5);
-      padding: em(5) 0 em(10) 0;
+      padding: em(10) 0 em(10) 0;
     }
 
     .account-settings-icon {
       position: absolute;
-      top: em(7);
+      top: em(14);
       left: em(10);
     }
 
@@ -67,7 +67,7 @@
       }
 
       @include media(desktop) {
-        width: lines(12);
+        width: lines(9);
       }
     }
 
@@ -79,7 +79,7 @@
       padding-left: lines(0.5);
       @include media(desktop) {
         float: right;
-        width: lines(7);
+        width: lines(7.5);
         text-align: center;
       }
     }
@@ -92,7 +92,7 @@
 
       @include media(desktop) {
         float: right;
-        width: lines(7);
+        width: lines(7.5);
         text-align: center;
       }
 
@@ -102,7 +102,7 @@
       padding-left: lines(0.5);
       @include media(desktop) {
         float: right;
-        min-width: lines(2);
+        min-width: lines(2.5);
         text-align: center;
       }
     }

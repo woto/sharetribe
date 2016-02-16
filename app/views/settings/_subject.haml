@@ -1,0 +1,33 @@
+.form-group
+  = label_tag "education[subjects][#{subject_id}][subject]" do
+    = check_box_tag "education[subjects][#{subject_id}][subject]", option.id, selected, class: 'js-subject-checkbox'
+    = option.title
+
+.js-subject-block.hidden
+
+  .form-group
+    = text_area_tag "education[subjects][#{subject_id}][details]", nil, cols: 2, placeholder: 'What are specific areas you\'re really great at?', style: 'height: initial;'
+
+  .form-group
+    .btn-group.btn-group-justified{:data => {:toggle => "buttons"}}
+      - @subject_year_options.each do |option|
+        = label_tag "education[subjects][#{subject_id}][degree][#{option.id}]", class: 'btn btn-default' + (degree.call(option) ? ' active' : '') do
+          = radio_button_tag "education[subjects][#{subject_id}][degree]", option.id, degree.call(option)
+          = option.title(I18n.locale)
+
+  .form-group
+    .form-group
+      %div{style: 'float: left; font-size: small'}
+        grade
+      %div{style: 'float: right; font-size: small'}
+        fair
+    %div{id: "education_subjects_#{subject_id}_grade_number_#{option.id}", style: 'clear: both'}
+      - content_for :extra_javascript do
+        :javascript
+          $("#education_subjects_#{subject_id}_grade_number_#{option.id}").noUiSlider({
+            start: [ 50 ],
+            range: {
+              'min': [ 0 ],
+              'max': [ 100 ]
+            }
+          });

@@ -107,10 +107,16 @@
   }
 
   &.with-borders {
-    $toggle-border-width: 0;
+    $toggle-border-width: 1px;
     border: $toggle-border-width solid $border;
-    @include border-radius(em(5));
+    @include border-radius(em(3));
     background: $highlight;
+
+    &:hover {
+      color: $background;
+      background: $aside;
+      border-color: darken($aside, 10%);
+    }
 
     &.toggled {
       border-width: 0;
@@ -133,7 +139,7 @@
 }
 
 .toggle-header-container {
-  @include button-group-button-padding;
+  padding: 0 lines(1.2);
   height: $default-button-height;
   line-height: $default-button-line-height;
 }
@@ -148,5 +154,6 @@
 }
 
 .toggle-menu-subitem, a.toggle-menu-subitem {
-  padding-left: lines(1);
+  padding-left: lines(1.2);
+  padding-right: lines(3.2);
 }

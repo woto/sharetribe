@@ -296,6 +296,7 @@ class ListingsController < ApplicationController
         ).html_safe
         redirect_to @listing, status: 303 and return
       else
+        binding.pry
         logger.error("Errors in creating listing: #{@listing.errors.full_messages.inspect}")
         flash[:error] = t(
           "layouts.notifications.listing_could_not_be_saved",
@@ -692,6 +693,7 @@ class ListingsController < ApplicationController
   # don't use association to link to listing but directly connect to
   # listing_id.
   def upsert_field_values!(listing, custom_field_params)
+    binding.pry
     custom_field_params ||= {}
 
     # Delete all existing

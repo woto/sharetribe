@@ -14,8 +14,10 @@ ThinkingSphinx::Index.define :listing, :with => :active_record, :delta => Thinki
   indexes description
   indexes custom_field_values(:text_value), :as => :custom_text_fields
   indexes origin_loc.google_address
+  indexes author.description
 
   # attributes
+  has author_id
   has id, :as => :listing_id # id didn't work without :as aliasing
   has price_cents
   has created_at, updated_at
@@ -23,8 +25,9 @@ ThinkingSphinx::Index.define :listing, :with => :active_record, :delta => Thinki
   has category(:id), :as => :category_id
   has listing_shape_id
   has community_id
-  has custom_dropdown_field_values.selected_options.id, :as => :custom_dropdown_field_options, :type => :integer, :multi => true
-  has custom_checkbox_field_values.selected_options.id, :as => :custom_checkbox_field_options, :type => :integer, :multi => true
+  #has custom_dropdown_field_values.selected_options.id, :as => :custom_dropdown_field_options, :type => :integer, :multi => true
+  #has custom_checkbox_field_values.selected_options.id, :as => :custom_checkbox_field_options, :type => :integer, :multi => true
+  has custom_field_values.selected_options.id, :as => :custom_field_options, :type => :integer, :multi => true
 
   set_property :enable_star => true
 

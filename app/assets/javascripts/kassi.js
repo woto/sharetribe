@@ -620,17 +620,49 @@ function initialize_payment_gateway_terms_lightbox(gateway_name) {
   });
 }
 
+function init_tmp(zzz){
+  $js_subject_block = $(zzz).parent().parent().next('.js-subject-block');
+  if($(zzz).prop('checked'))
+  {
+    $js_subject_block.removeClass('hidden');
+    $js_subject_block.find('[type=radio]').rules("add", {
+      required: true
+    });
+  }
+  else
+  {
+    $js_subject_block.addClass('hidden');
+    $js_subject_block.find('[type=radio]').rules("remove", "required");
+  }
+}
+
 function initialize_update_profile_info_form(locale, person_id, name_required) {
   auto_resize_text_areas("update_profile_description_text_area");
   $('input.text_field:first').focus();
   var form_id = "#edit_person_" + person_id;
   $(form_id).validate({
     rules: {
+      "person[username]": {required: true, maxlength: 30},
+      "person[undergraduate_school]": {required: true, maxlength: 30},
+      "person[graduate_school]": {required: true, maxlength: 30},
+      "person[grade_year]": {required: true, maxlength: 30},
       "person[street_address]": {required: false, address_validator: true},
       "person[given_name]": {required: name_required, maxlength: 30},
       "person[family_name]": {required: name_required, maxlength: 30},
       "person[phone_number]": {required: false, maxlength: 25},
-      "person[image]": { accept: "(jpe?g|gif|png)" }
+      "person[image]": { accept: "(jpe?g|gif|png)" },
+    },
+    errorPlacement: function(error, element) {
+      if(element.is('[type=radio]'))
+      {
+        error.insertAfter(element.parent().parent());
+      }
+      else
+      {
+        error.insertAfter(element);
+      }
+      //debugger;
+      //error.appendTo( element.parent("td").next("td") );
     },
     onkeyup: false,
     onclick: false,
@@ -640,6 +672,16 @@ function initialize_update_profile_info_form(locale, person_id, name_required) {
       disable_and_submit(form_id, form, "false", locale);
     }
   });
+
+
+  $('.js-subject-checkbox').each(function(){
+    init_tmp(this);
+  })
+
+  $('.js-subject-checkbox').change(function(){
+    init_tmp(this);
+  });
+
 }
 
 function initialize_update_notification_settings_form(locale, person_id) {

@@ -1,0 +1,21 @@
+#footer a {
+  color: white;
+}
+
+.btn-group {
+  height: 42px;
+}
+
+.btn-default {
+  &:active:hover, &.active {
+    background: #FF4081;
+    box-shadow: none;
+    color: white;
+  }
+
+  &:hover, &:active:focus, &:active.focus, &.active:hover, &.active:focus, &.active.focus, .open > &.dropdown-toggle:hover, .open > &.dropdown-toggle:focus, .open > &.dropdown-toggle.focus {
+    background: #FF2770;
+    color: white;
+    box-shadow: none;
+  }
+}

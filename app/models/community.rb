@@ -120,6 +120,7 @@ class Community < ActiveRecord::Base
 
   has_many :categories, -> { order("sort_priority") }
   has_many :top_level_categories, -> { where("parent_id IS NULL").order("sort_priority") }, :class_name => "Category"
+  has_many :profile_settings
   has_many :subcategories, -> { where("parent_id IS NOT NULL").order("sort_priority") }, :class_name => "Category"
 
   has_many :conversations

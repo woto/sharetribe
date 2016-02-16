@@ -36,7 +36,7 @@
   @include border-radius(0);
 
   // Border radius
-  $radius: lines(0.25);
+  $radius: em(3);
   &:first-child {
     @include border-left-radius($radius);
   }
@@ -62,6 +62,10 @@
 */
 @mixin button-group-borders($border-width) {
   border-right-width: em(0);
+
+  &.selected + * {
+    border-right-width: 1px;
+  }
 
   &.selected {
     border-width: $border-width;
@@ -101,9 +105,9 @@
   cursor: pointer;
   margin: lines(0.5) 0;
   padding: 0 lines(1);
-  padding-bottom: 4px; // To center text vertically
+  //padding-bottom: 4px; // To center text vertically
   height: em(42);
-  border: 0;
+  border: 1px solid #ccc;
   display: table;
   line-height: lines(1);
 
@@ -114,8 +118,9 @@
   }
 
   &:hover {
-    background: darken($bg-color, 5%);
     color: $background;
+    background: $aside;
+    border-color: darken($aside, 10%);
   };
 
   &:active {
@@ -142,7 +147,7 @@
 
 // Button on top of cover photo
 @mixin cover-photo-button($color) {
-  @include border-radius(em(5));
+  @include border-radius(em(3));
   @include normal-type;
 
   color: $background;

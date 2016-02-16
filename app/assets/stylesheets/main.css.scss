@@ -42,8 +42,8 @@ body {
 }
 
 .page-content {
-  padding-bottom: lines(3);
-  padding-top: lines(0.5);
+  //padding-bottom: lines(3);
+  //padding-top: lines(0.5);
 
   p {
     margin-bottom: lines(0.5);
@@ -58,9 +58,9 @@ body {
     height: lines(0.5);
   }
 
-  @include media(tablet) {
-    padding-top: lines(1);
-  }
+  //@include media(tablet) {
+  //  padding-top: lines(1);
+  //}
 
 }
 
@@ -2011,7 +2011,7 @@ figure.fluidratio {
   }
 
   figure.marketplace-cover-small {
-    background-image: url(image-path($small-cover-photo-url));
+    //background-image: url(image-path($small-cover-photo-url));
     height: em($small-cover-photo-mobile-height);
     @include media(tablet) {
       @include fluid-ratio(em(1920) em($small-cover-photo-height), em(300) em($small-cover-photo-height));
@@ -2025,11 +2025,11 @@ figure.fluidratio {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    background: rgba($highlight, 0.9);
+    //background: rgba($highlight, 0.9);
 
-    &.without-text {
-      background: rgba($highlight, 0.625);
-    }
+    //&.without-text {
+    //  background: rgba($highlight, 0.625);
+    //}
   }
 
   figure.marketplace-cover-small-fade {
@@ -2061,11 +2061,12 @@ figure.fluidratio {
   }
 
   .title-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    padding: 20px 0;
+  //  position: absolute;
+  //  top: 0;
+  //  left: 0;
+  //  right: 0;
+  //  bottom: 0;
   }
 
   .title-header-wrapper {
@@ -2099,7 +2100,7 @@ figure.fluidratio {
 
       @include media(tablet) {
         text-align: left;
-        @include large-type;
+        @include larger-type;
       }
     }
   }
@@ -2147,7 +2148,7 @@ figure.fluidratio {
 
   .browse-view-search-form {
     width: 100%;
-    padding-top: lines(0.5);
+    //padding-top: lines(0.5);
 
     input[type=text] {
       @include normal-type;
@@ -2158,6 +2159,7 @@ figure.fluidratio {
       display: inline;
       line-height: 40px;
       height: 42px;
+      border: 1px solid #ccc;
     }
 
     button.action-button {
@@ -2173,9 +2175,9 @@ figure.fluidratio {
       height: 42px;
     }
 
-    @include media(tablet) {
-      padding: lines(1) 0;
-    }
+    //@include media(tablet) {
+    //  padding: lines(1) 0;
+    //}
   }
 
   @include media(tablet) {

@@ -1,5 +1,7 @@
 class PeopleController < Devise::RegistrationsController
   class PersonDeleted < StandardError; end
+  
+  include Concerns::UpdateFieldsConcern
 
   skip_before_filter :verify_authenticity_token, :only => [:creates]
   skip_before_filter :require_no_authentication, :only => [:new]
@@ -205,6 +207,7 @@ class PeopleController < Devise::RegistrationsController
   end
 
   def update
+    binding.pry
     # If setting new location, delete old one first
     if params[:person] && params[:person][:location] && (params[:person][:location][:address].empty? || params[:person][:street_address].blank?)
       params[:person].delete("location")
@@ -223,11 +226,15 @@ class PeopleController < Devise::RegistrationsController
 
     begin
       person_params = params.require(:person).permit(
+        :undergraduate_school,
+        :graduate_school,
+        :grade_year,
         :given_name,
         :family_name,
         :street_address,
         :phone_number,
         :image,
+        :skype,
         :description,
         { location: [:address, :google_address, :latitude, :longitude] },
         :password,
@@ -381,12 +388,14 @@ class PeopleController < Devise::RegistrationsController
 
     person.inherit_settings_from(current_community)
 
+    person.username = Person.generate_temporary_username
+
     if person.save!
       sign_in(resource_name, resource)
     end
 
     person.set_default_preferences
-
+    
     [person, email]
   end
 

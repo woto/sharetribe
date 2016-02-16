@@ -40,6 +40,14 @@
 #  is_organization                    :boolean
 #  organization_name                  :string(255)
 #  deleted                            :boolean          default(FALSE)
+#  education                          :text
+#  experience                         :text
+#  facts                              :text
+#  skype                              :string(255)
+#  additional                         :text
+#  undergraduate_school               :string(255)
+#  graduate_school                    :string(255)
+#  grade_year                         :integer
 #
 # Indexes
 #
@@ -88,6 +96,8 @@ class Person < ActiveRecord::Base
   attr_protected :is_admin
 
   has_many :listings, -> { where(deleted: 0) }, :dependent => :destroy, :foreign_key => "author_id"
+  has_many :custom_field_values, through: :listings, source: :custom_field_values
+  #has_many :selected_options, through: cus
   has_many :emails, :dependent => :destroy, :inverse_of => :person
 
   has_one :location, -> { where(location_type: :person) }, :dependent => :destroy
@@ -632,4 +642,13 @@ class Person < ActiveRecord::Base
   def self.members_of(community)
     joins(:communities).where("communities.id" => community.id)
   end
+
+  def self.generate_temporary_username
+    loop do
+      o = [('a'..'z'), ('0'..'9')].map { |i| i.to_a }.flatten
+      username = (0...8).map { o[rand(o.length)] }.join
+      break username unless Person.exists?(username: username)
+    end
+  end
+
 end

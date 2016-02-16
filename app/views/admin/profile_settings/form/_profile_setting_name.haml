@@ -1,0 +1,8 @@
+= form.label :name_attributes, t(".profile_setting_title")
+- available_locales.each do |locale_name, locale_value|
+  .row
+    - if available_locales.size > 1
+      .col-2
+        = label_tag "profile_setting[translation_attributes][#{locale_value}][name]", locale_name + ": ", :class => "new-profile-setting-name-locale-label"
+    .col-8
+      = text_field_tag "profile_setting[translation_attributes][#{locale_value}][name]", @profile_setting.display_name(locale_value), :class => "required"

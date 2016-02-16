@@ -74,12 +74,13 @@ module ListingIndexService::Search
         grouped_by_operator = selection_groups.group_by { |v| v[:operator] }
 
         with_all = {
-          custom_dropdown_field_options: (grouped_by_operator[:or] || []).map { |v| v[:value] },
-          custom_checkbox_field_options: (grouped_by_operator[:and] || []).flat_map { |v| v[:value] },
+          custom_field_options: (grouped_by_operator[:or] || []).map { |v| v[:value] } +
+            (grouped_by_operator[:and] || []).flat_map { |v| v[:value] }
         }
 
         models = Listing.search(
           Riddle::Query.escape(search[:keywords] || ""),
+          #group_by: :author_id,
           sql: {
             include: included_models
           },
