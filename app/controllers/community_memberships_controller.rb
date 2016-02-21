@@ -12,14 +12,14 @@ class CommunityMembershipsController < ApplicationController
 
     if existing_membership && existing_membership.accepted?
       flash[:notice] = t("layouts.notifications.you_are_already_member")
-      redirect_to root and return
+      redirect_to person_settings_path(person_id: @current_user.username) and return
     elsif existing_membership && existing_membership.pending_email_confirmation?
       # Check if requirements are already filled, but the membership just hasn't been updated yet
       # (This might happen if unexpected error happens during page load and it shouldn't leave people in loop of of
       # having email confirmed but not the membership)
       if @current_user.has_valid_email_for_community?(@current_community)
         @current_community.approve_pending_membership(@current_user)
-        redirect_to root and return
+        redirect_to person_settings_path(person_id: @current_user.username) and return
       end
 
       redirect_to confirmation_pending_path and return
@@ -101,7 +101,7 @@ class CommunityMembershipsController < ApplicationController
       Delayed::Job.enqueue(CommunityJoinedJob.new(@current_user.id, @current_community.id))
       Delayed::Job.enqueue(SendWelcomeEmail.new(@current_user.id, @current_community.id), priority: 5)
       flash[:notice] = t("layouts.notifications.you_are_now_member")
-      redirect_to root
+      redirect_to person_settings_path(person_id: @current_user.username)
     else
       flash[:error] = t("layouts.notifications.joining_community_failed")
       logger.info { "Joining a community failed, because: #{@community_membership.errors.full_messages}" }
