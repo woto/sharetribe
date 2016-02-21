@@ -291,27 +291,31 @@ class PeopleController < Devise::RegistrationsController
         #/= debug selected_subjects = @current_user.listings.joins(:custom_field_values).where(:custom_field_values => {:custom_field_id => 1})
         #/= CustomFieldValue.where(listing_id: @current_user.listings.ids, custom_field_id: subject).joins(:selected_options).all
 
+
+        shape = ListingService::API::Api.shapes.get(
+          listing_shape_id: @i_am_a_teacher,
+          community_id: @current_community.id)
+
         params[:education][:subjects].each do |id, hash|
           if (listing = @current_user.listings.where(id: id).first).present?
             if hash.key? :subject
               # update listing
               ActiveRecord::Base.transaction do
+                destoy_custom_fields_values_and_options(listing)
+
+                upsert_subject_field_values(listing, id)
+                upsert_subject_year_field_values(listing, id)
+                upsert_subject_grade_field_values(listing, id)
               end
             else
               # destroy listing
               ActiveRecord::Base.transaction do
                 listing.destroy!
-                custom_field_value_ids = listing.custom_field_values.map(&:id)
-                CustomFieldOptionSelection.where(custom_field_value_id: custom_field_value_ids).delete_all
-                CustomFieldValue.where(id: custom_field_value_ids).delete_all
+                destoy_custom_fields_values_and_options(listing)
               end
             end
           elsif hash.key? :subject
             # create listing
-            shape = ListingService::API::Api.shapes.get(
-              listing_shape_id: @i_am_a_teacher,
-              community_id: @current_community.id)
-
             ActiveRecord::Base.transaction do
               listing = Listing.create!(
                 author: @current_user,
@@ -321,28 +325,10 @@ class PeopleController < Devise::RegistrationsController
                 transaction_process_id: shape.data[:transaction_process_id],
                 listing_shape_id: shape.data[:id]
               )
-              subject_field_value = DropdownFieldValue.new.tap do |dfv| 
-                dfv.listing_id = listing.id
-                dfv.custom_field_id = @subject
-                dfv.custom_field_option_selections = [CustomFieldOptionSelection.new(
-                  custom_field_value: subject_field_value,
-                  custom_field_option_id: params['education']['subjects'][id]['subject'])]
-              end.save!
 
-              subject_year_field_value = DropdownFieldValue.new.tap do |dfv|
-                dfv.listing_id = listing.id
-                dfv.custom_field_id = @subject_year
-                dfv.custom_field_option_selections = [CustomFieldOptionSelection.new(
-                  custom_field_value: subject_year_field_value,
-                  custom_field_option_id: params['education']['subjects'][id]['subject_year'])]
-                dfv.save!
-              end.save!
-
-              subject_grade_field_value = NumericFieldValue.new.tap do |nfv|
-                nfv.listing_id = listing.id
-                nfv.custom_field_id = @subject_grade
-                nfv.numeric_value = params['education']['subjects'][id]['subject_grade']
-              end.save!
+              upsert_subject_field_values(listing, id)
+              upsert_subject_year_field_values(listing, id)
+              upsert_subject_grade_field_values(listing, id)
 
               #CustomFieldOptionSelection.create!(custom_field_value: subject_field_value, custom_field_option_id: params['education'][listing.id]['subject'])
               #CustomFieldOptionSelection.create!(custom_field_value: degree_field_value, custom_field_option_id: params['education'][listing.id]['degree'])
@@ -500,6 +486,41 @@ class PeopleController < Devise::RegistrationsController
   # NOTE: similar method is in FollowedPeopleController and should be cleaned too
   def followed_people_in_community(person, community)
     person.followed_people.select{|p| p.member_of?(community)}
+  end
+
+  def destoy_custom_fields_values_and_options(listing)
+    custom_field_value_ids = listing.custom_field_values.map(&:id)
+    CustomFieldOptionSelection.where(custom_field_value_id: custom_field_value_ids).delete_all
+    CustomFieldValue.where(id: custom_field_value_ids).delete_all
+  end
+
+  def upsert_subject_field_values(listing, id)
+    subject_field_value = DropdownFieldValue.new.tap do |dfv| 
+      dfv.listing_id = listing.id
+      dfv.custom_field_id = @subject
+      dfv.custom_field_option_selections = [CustomFieldOptionSelection.new(
+        custom_field_value: subject_field_value,
+        custom_field_option_id: params['education']['subjects'][id]['subject'])]
+    end.save!
+  end
+
+  def upsert_subject_year_field_values(listing, id)
+    subject_year_field_value = DropdownFieldValue.new.tap do |dfv|
+      dfv.listing_id = listing.id
+      dfv.custom_field_id = @subject_year
+      dfv.custom_field_option_selections = [CustomFieldOptionSelection.new(
+        custom_field_value: subject_year_field_value,
+        custom_field_option_id: params['education']['subjects'][id]['subject_year'])]
+      dfv.save!
+    end.save!
+  end
+
+  def upsert_subject_grade_field_values(listing, id)
+    subject_grade_field_value = NumericFieldValue.new.tap do |nfv|
+      nfv.listing_id = listing.id
+      nfv.custom_field_id = @subject_grade
+      nfv.numeric_value = params['education']['subjects'][id]['subject_grade']
+    end.save!
   end
 
 end
