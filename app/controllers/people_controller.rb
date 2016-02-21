@@ -319,7 +319,7 @@ class PeopleController < Devise::RegistrationsController
             ActiveRecord::Base.transaction do
               listing = Listing.create!(
                 author: @current_user,
-                title: 'aaa',
+                title: '  ',
                 community_id: @current_community.id,
                 category: @current_community.categories.find(@category),
                 transaction_process_id: shape.data[:transaction_process_id],

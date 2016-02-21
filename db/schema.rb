@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160214195501) do
+ActiveRecord::Schema.define(version: 20160221005008) do
 
   create_table "auth_tokens", force: :cascade do |t|
     t.string   "token",            limit: 255
@@ -899,6 +899,8 @@ ActiveRecord::Schema.define(version: 20160214195501) do
     t.string   "undergraduate_school",               limit: 255
     t.string   "graduate_school",                    limit: 255
     t.integer  "grade_year",                         limit: 4
+    t.float    "offer_fee",                          limit: 24
+    t.float    "request_fee",                        limit: 24
   end
 
   add_index "people", ["authentication_token"], name: "index_people_on_authentication_token", using: :btree

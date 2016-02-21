@@ -48,6 +48,8 @@
 #  undergraduate_school               :string(255)
 #  graduate_school                    :string(255)
 #  grade_year                         :integer
+#  offer_fee                          :float(24)
+#  request_fee                        :float(24)
 #
 # Indexes
 #
