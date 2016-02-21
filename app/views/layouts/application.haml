@@ -96,7 +96,7 @@
 
   - if params[:controller] == "homepage" && params[:action] == "index"
     %form{method: "get", id: "homepage-filters"}
-      - params.except("action", "controller", "q", "lc", "ls", "view", "utf8").each do |param, value|
+      - params.except("action", "controller", "q", "lc", "ls", "view", "utf8", "boundingbox").each do |param, value|
         - unless param.match(/^filter_option/) || param.match(/^checkbox_filter_option/) || param.match(/^nf_/) || param.match(/^price_/)
           = hidden_field_tag param, value
       = hidden_field_tag "view", @view_type
@@ -107,8 +107,6 @@
   = render :partial => "layouts/google_analytics_script"
 
   -# Most of the JavaScript should be for performance reasons at the end of the body
-
-  = content_for(:location_search)
 
   -# load Facebook SDK for the whole page
   = render :partial => "layouts/facebook_sdk"
@@ -124,7 +122,7 @@
 
   :javascript
     $(function() {
-      FastClick.attach(document.body);
+      FastClick.attach(document.body, { excludeNode: '^pac-'} );
       $('input, textarea').placeholder();
     });
 

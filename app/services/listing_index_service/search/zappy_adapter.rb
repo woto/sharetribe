@@ -40,7 +40,7 @@ module ListingIndexService::Search
             req.headers['Authorization'] = "apikey key=#{API_KEY}"
           end
           distance_unit_system = MarketplaceService::API::Api.configurations.get(community_id: community_id).data[:distance_unit]
-          Result::Success.new(parse_response(res.body, includes, (distance_unit_system === :metric) ? :km : :miles))
+          Result::Success.new(parse_response(res.body, includes, (distance_unit_system == :metric) ? :km : :miles))
         rescue StandardError => e
           Result::Error.new(e)
         end
@@ -67,10 +67,10 @@ module ListingIndexService::Search
       {
        :'page[number]' => original[:page],
        :'page[size]' => original[:per_page],
-       :'filter[price_min]' => original[:price_min],
-       :'filter[price_max]' => original[:price_max],
+       :'filter[price_min]' => Maybe(original[:price_cents]).min,
+       :'filter[price_max]' => Maybe(original[:price_cents]).max,
        :'filter[omit_closed]' => !original[:include_closed],
-       :'filter[listings_shape_ids]' => Maybe(original[:listing_shape_ids]).join(",").or_else(nil),
+       :'filter[listing_shape_ids]' => Maybe(original[:listing_shape_ids]).join(",").or_else(nil),
        :'filter[category_ids]' => Maybe(original[:categories]).join(",").or_else(nil),
        :'search[locale]' => original[:locale]
       }.merge(search_params).compact
@@ -80,10 +80,10 @@ module ListingIndexService::Search
       # TODO: use pluck instead of instantiating the ActiveRecord objects completely, for better performance
       # http://collectiveidea.com/blog/archives/2015/03/05/optimizing-rails-for-memory-usage-part-3-pluck-and-database-laziness/
 
-      ids = id_obs.map { |r| r['id'] }
+      l_ids = id_obs.map { |r| r['id'] }
       data_by_id =  Hash[id_obs.map { |m| [m['id'].to_i, m] }]
 
-      Maybe(ids).map { |ids|
+      Maybe(l_ids).map { |ids|
         Listing
           .where(id: ids)
           .order("field(listings.id, #{ids.join ','})")
