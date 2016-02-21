@@ -1,27 +1,3 @@
-//:css
-//  .btn-file {
-//    position: relative;
-//    overflow: hidden;
-//  }
-//  .btn-file input[type=file] {
-//    position: absolute;
-//    top: 0;
-//    right: 0;
-//    min-width: 100%;
-//    min-height: 100%;
-//    font-size: 100px;
-//    text-align: right;
-//    filter: alpha(opacity=0);
-//    opacity: 0;
-//    background: red;
-//    cursor: inherit;
-//    display: block;
-//  }
-//  input[readonly] {
-//    background-color: white !important;
-//    cursor: text !important;
-//  }
-
 :css
 
   .js-subject-block {
@@ -42,7 +18,7 @@
 - content_for :javascript do
   initialize_update_profile_info_form("#{I18n.locale}","#{@person.id.to_s}", #{@current_community.real_name_required?});
 
--#- content_for :extra_javascript do
+-# content_for :extra_javascript do
 -#  = javascript_include_tag "https://maps.google.com/maps/api/js?sensor=true"
 
 - content_for :title_header do
@@ -58,10 +34,12 @@
   = form_for @person do |form|
 
     .form-group
-      = text_field_tag 'person[undergraduate_school]', nil, :class => :text_field, :maxlength => "20", :id => "person_undergraduate_school", placeholder: 'Undergraduate School', value: @current_user.undergraduate_school
+      = text_field_tag 'person[undergraduate_school]', nil, :class => :text_field, :maxlength => "20",
+        :id => "person_undergraduate_school", placeholder: 'Undergraduate School', value: @current_user.undergraduate_school
 
     .form-group
-    = text_field_tag 'person[graduate_school]', nil, :class => :text_field, :maxlength => "20", :id => "person_graduate_school", placeholder: 'Graduate School', value: @current_user.graduate_school
+      = text_field_tag 'person[graduate_school]', nil, :class => :text_field, :maxlength => "20",
+        :id => "person_graduate_school", placeholder: 'Graduate School', value: @current_user.graduate_school
 
     .form-group
       .btn-group.btn-group-justified{:data => {:toggle => "buttons"}}
@@ -71,29 +49,23 @@
             = radio_button_tag "person[grade_year]", option.id, active
             = option.title(I18n.locale)
 
-    - @current_user.listings.each do |listing|
-      - option = listing.answer_for(@subject_field).selected_options.joins(:titles).where(:custom_field_option_titles => {:locale => :en}).first
-      = render partial: 'subject', locals: {option: option, subject_id: listing.id, selected: true, degree: ->(option){listing.answer_for(@subject_year_field).selected_options.first.id == option.id ? true : false}}
-      - @subject_options = @subject_options.delete_if{|el_in_arr| el_in_arr.id == option.id }
+    - @current_user.listings.where(listing_shape_id: @i_am_a_teacher).each do |listing|
+      - subject = listing.answer_for(@subject_field).selected_options.joins(:titles).where(:custom_field_option_titles => {:locale => :en}).first
+      = render partial: 'subject', locals: {subject: subject, listing: listing, listing_id: listing.id, selected: true, subject_year: ->(option){listing.answer_for(@subject_year_field).selected_options.first.id == option.id ? true : false}}
+      - @subject_options = @subject_options.delete_if{|el_in_arr| el_in_arr.id == subject.id }
 
-    - @subject_options.each do |option|
-      = render partial: 'subject', locals: {option: option, subject_id: DateTime.now.strftime('%Q'), selected: false, degree: ->(option){false}}
+    - @subject_options.each do |subject|
+      = render partial: 'subject', locals: {subject: subject, listing: nil, listing_id: -subject.id, selected: false, subject_year: ->(option){false}}
 
-    /.form-group
-    /  = text_field_tag :hourly_fee, nil, placeholder: 'Hourly fee'
-
+    .form-group
+      = text_field_tag :hourly_fee, nil, placeholder: 'Hourly fee'
 
     - unless @person.is_organization
-
-      -# Username
-      /= label_tag 'person[username]', username_label
-      /= text_field_tag 'person[username]', nil, :class => :text_field, :maxlength => "20", :id => "person_username"
 
       .form-group
         = form.text_field :given_name, :class => "text_field", :maxlength => "30", placeholder: 'First name'
 
       .inline-label-container
-        /= form.label :family_name, t("settings.profile.family_name"), :class => "inline"
         %small
           - if ["first_name_with_initial", "first_name_only"].include? @current_community.name_display_type
             = t("settings.profile.#{@current_community.name_display_type}")
@@ -117,29 +89,27 @@
 
     -# Phone number
     .inline-label-container
-      /= form.label :phone_number, t("settings.profile.phone_number"), :class => "inline"
       %small
         = t('settings.profile.invisible')
     = form.text_field :phone_number, :class => "text_field", :maxlength => "25", placeholder: t("settings.profile.phone_number")
 
-    -# Profile picture
-    /= form.file_field :image, :size => 30, :id => "avatar_file", class: 'btn-file'
-    /= form.label :image, t("settings.profile.profile_picture")
+    .form-group
+      .fileinput.fileinput-new{data: {provides: "fileinput"}, style: "margin: initial"}
+        %span.btn.btn-default.btn-file
+          %span Profile picture
+          = form.file_field 'image', :size => 30, :id => "avatar_file", class: 'btn-file'
+          %input{type: "file"}
+        %span.fileinput-filename
+        %span.fileinput-new
+          No file chosen
 
     .form-group
-      :erb
-        <div class="fileinput fileinput-new" data-provides="fileinput" style="margin: initial">
-          <span class="btn btn-default btn-file"><span>Choose file</span><input type="file" /></span>
-          <span class="fileinput-filename"></span><span class="fileinput-new">No file chosen</span>
-        </div>
+      = form.text_field :skype, :class => "update_profile_skype_text_filed", placeholder: t("settings.profile.skype")
 
     .form-group
       -# About text
-      /= form.label :skype, t("settings.profile.skype"), :class => "input"
-      = form.text_field :skype, :class => "update_profile_skype_text_filed", placeholder: t("settings.profile.skype")
 
-    /= form.label :description, t("settings.profile.about_you"), :class => "input"
-    = form.text_area :description, :class => "update_profile_description_text_area", placeholder: t("settings.profile.about_you")
+      = form.text_area :description, :class => "update_profile_description_text_area", placeholder: t("settings.profile.about_you")
 
     -#= form.fields_for :location do |loc|
     -#  = loc.hidden_field :address, :value => @person.location.address

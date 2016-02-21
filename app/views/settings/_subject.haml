@@ -1,18 +1,18 @@
 .form-group
-  = label_tag "education[subjects][#{subject_id}][subject]" do
-    = check_box_tag "education[subjects][#{subject_id}][subject]", option.id, selected, class: 'js-subject-checkbox'
-    = option.title
+  = label_tag "education[subjects][#{listing_id}][subject]" do
+    = check_box_tag "education[subjects][#{listing_id}][subject]", subject.id, selected, class: 'js-subject-checkbox'
+    = subject.title
 
 .js-subject-block.hidden
 
   .form-group
-    = text_area_tag "education[subjects][#{subject_id}][details]", nil, cols: 2, placeholder: 'What are specific areas you\'re really great at?', style: 'height: initial;'
+    = text_field_tag "education[subjects][#{listing_id}][details]", nil, cols: 2, placeholder: 'What are specific areas you\'re really great at?', style: 'height: initial;'
 
   .form-group
     .btn-group.btn-group-justified{:data => {:toggle => "buttons"}}
       - @subject_year_options.each do |option|
-        = label_tag "education[subjects][#{subject_id}][degree][#{option.id}]", class: 'btn btn-default' + (degree.call(option) ? ' active' : '') do
-          = radio_button_tag "education[subjects][#{subject_id}][degree]", option.id, degree.call(option)
+        = label_tag "education[subjects][#{listing_id}][subject_year][#{option.id}]", class: 'btn btn-default' + (subject_year.call(option) ? ' active' : '') do
+          = radio_button_tag "education[subjects][#{listing_id}][subject_year]", option.id, subject_year.call(option)
           = option.title(I18n.locale)
 
   .form-group
@@ -21,13 +21,24 @@
         grade
       %div{style: 'float: right; font-size: small'}
         fair
-    %div{id: "education_subjects_#{subject_id}_grade_number_#{option.id}", style: 'clear: both'}
+    %div{id: "education_subjects_#{listing_id}_subject_grade_slider", style: 'clear: both'}
+      = hidden_field_tag  "education[subjects][#{listing_id}][subject_grade]"
+
       - content_for :extra_javascript do
         :javascript
-          $("#education_subjects_#{subject_id}_grade_number_#{option.id}").noUiSlider({
-            start: [ 50 ],
+
+          html5Slider = $("#education_subjects_#{listing_id}_subject_grade_slider")
+          html5Slider.noUiSlider({
+            start: [ "#{listing ? listing.answer_for(@subject_grade_field).display_value : 50}" ],
             range: {
               'min': [ 0 ],
               'max': [ 100 ]
             }
+          });
+
+          html5Slider[0].noUiSlider.on('update', function( values, handle ) {
+
+            var value = values[handle];
+
+            $("[name='education[subjects][#{listing_id}][subject_grade]']").val(value)
           });
