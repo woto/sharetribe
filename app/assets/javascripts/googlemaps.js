@@ -90,6 +90,9 @@ function googlemapMarkerInit(canvas,n_prefix,n_textfield,draggable,community_loc
 
   var myOptions = {
     'zoom': 12,
+    'scrollwheel': false,
+    'navigationControl': false,
+    'draggable': false,
     'streetViewControl': false,
     'mapTypeControl': false,
     'mapTypeId': google.maps.MapTypeId.ROADMAP

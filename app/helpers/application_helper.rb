@@ -199,7 +199,6 @@ module ApplicationHelper
       "external_link" => "fa fa-external-link",
       "credit_card" => "fa fa-credit-card",
 
-      "information" => "fa fa-info-sign",
       "alert" => "fa fa-warning-sign",
       "how_to_use" => "fa fa-book",
       "privacy" => "fa fa-lock",
