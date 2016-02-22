@@ -83,6 +83,9 @@ GEM
       rake (~> 10.4)
     arel (6.0.3)
     ast (2.2.0)
+    autoprefixer-rails (6.3.3)
+      execjs
+      json
     aws-sdk (2.2.15)
       aws-sdk-resources (= 2.2.15)
     aws-sdk-core (2.2.15)
@@ -99,6 +102,9 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bootstrap-sass (3.3.5)
+      autoprefixer-rails (>= 5.0.0.1)
+      sass (>= 3.2.19)
     braintree (2.30.2)
       builder (>= 2.0.0)
     builder (3.2.2)
@@ -204,6 +210,8 @@ GEM
       pusher-client (~> 0.3)
       riddle (>= 1.5.6)
       thinking-sphinx
+    font-awesome-rails (4.5.0.1)
+      railties (>= 3.2, < 5.1)
     formatador (0.2.5)
     fssm (0.2.10)
     gherkin (3.2.0)
@@ -510,11 +518,12 @@ DEPENDENCIES
   aws-sdk (~> 2)
   aws-sdk-v1 (~> 1.64.0)
   better_errors (~> 2.1.1)
+  bootstrap-sass
   braintree (~> 2.30.0)
   capybara (~> 2.6.2)
   coffee-rails (~> 4.0.1)
-  compass (~> 0.13.alpha)
-  compass-rails (~> 2.0)
+  compass
+  compass-rails
   connection_pool (~> 0.9.3)
   countries (~> 1.2, >= 1.2.2)
   cucumber-rails (~> 1.4.0)
@@ -532,6 +541,7 @@ DEPENDENCIES
   faraday (~> 0.9.1)
   faraday_middleware (~> 0.10.0)
   flying-sphinx (~> 1.2.0)
+  font-awesome-rails
   guard-livereload (~> 1.4.0)
   guard-rspec (~> 4.3.1)
   haml (~> 4.0.5)
@@ -572,8 +582,8 @@ DEPENDENCIES
   rest-client (~> 1.8.0)
   rspec-rails (~> 3.0)
   rubocop (~> 0.37.2)
-  sass (~> 3.2.9)
-  sass-rails (~> 4.0.0)
+  sass
+  sass-rails
   selenium-webdriver (~> 2.45)
   statesman (~> 1.3.1)
   stringex (~> 2.5.2)

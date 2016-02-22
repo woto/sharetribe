@@ -263,6 +263,12 @@ class PeopleController < Devise::RegistrationsController
         person_params[:location] = loc.merge(location_type: :person)
       }
 
+      person_params = person_params.merge(
+        username: Person.generate_available_username(
+          @current_user,
+          params[:person][:given_name],
+          params[:person][:family_name]))
+
       if @person.update_attributes(person_params)
         if params[:person][:password]
           #if password changed Devise needs a new sign in.
@@ -291,7 +297,6 @@ class PeopleController < Devise::RegistrationsController
         #/= debug selected_subjects = @current_user.listings.joins(:custom_field_values).where(:custom_field_values => {:custom_field_id => 1})
         #/= CustomFieldValue.where(listing_id: @current_user.listings.ids, custom_field_id: subject).joins(:selected_options).all
 
-
         shape = ListingService::API::Api.shapes.get(
           listing_shape_id: @i_am_a_teacher,
           community_id: @current_community.id)
@@ -302,10 +307,7 @@ class PeopleController < Devise::RegistrationsController
               # update listing
               ActiveRecord::Base.transaction do
                 destoy_custom_fields_values_and_options(listing)
-
-                upsert_subject_field_values(listing, id)
-                upsert_subject_year_field_values(listing, id)
-                upsert_subject_grade_field_values(listing, id)
+                upsert_subject_fields_values(listing, id)
               end
             else
               # destroy listing
@@ -321,14 +323,13 @@ class PeopleController < Devise::RegistrationsController
                 author: @current_user,
                 title: '  ',
                 community_id: @current_community.id,
-                category: @current_community.categories.find(@category),
+                category: @current_community.categories.find(@i_am_a_teacher_category),
                 transaction_process_id: shape.data[:transaction_process_id],
                 listing_shape_id: shape.data[:id]
               )
 
-              upsert_subject_field_values(listing, id)
-              upsert_subject_year_field_values(listing, id)
-              upsert_subject_grade_field_values(listing, id)
+              upsert_subject_fields_values(listing, id)
+
 
               #CustomFieldOptionSelection.create!(custom_field_value: subject_field_value, custom_field_option_id: params['education'][listing.id]['subject'])
               #CustomFieldOptionSelection.create!(custom_field_value: degree_field_value, custom_field_option_id: params['education'][listing.id]['degree'])
@@ -344,7 +345,7 @@ class PeopleController < Devise::RegistrationsController
       flash[:error] = t("layouts.notifications.update_error")
     end
 
-    redirect_to :back
+    redirect_to person_path(@current_user.reload.username)
   end
 
   def destroy
@@ -521,6 +522,21 @@ class PeopleController < Devise::RegistrationsController
       nfv.custom_field_id = @subject_grade
       nfv.numeric_value = params['education']['subjects'][id]['subject_grade']
     end.save!
+  end
+
+  def upsert_subject_details_field_values(listing, id)
+    subject_details_field_value = TextFieldValue.new.tap do |tfv|
+      tfv.listing_id = listing.id
+      tfv.custom_field_id = @subject_details_field_id
+      tfv.text_value = params['education']['subjects'][id]['subject_details']
+    end.save!
+  end
+
+  def upsert_subject_fields_values(listing, id)
+    upsert_subject_field_values(listing, id)
+    upsert_subject_year_field_values(listing, id)
+    upsert_subject_grade_field_values(listing, id)
+    upsert_subject_details_field_values(listing, id)
   end
 
 end

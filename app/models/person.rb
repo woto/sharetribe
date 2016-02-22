@@ -653,4 +653,14 @@ class Person < ActiveRecord::Base
     end
   end
 
+  def self.generate_available_username(current_user, first_name, last_name)
+    username_without_num = "#{first_name}_#{last_name.first}".downcase.gsub(/[^a-z0-9_]/, '_')
+    counter = 1
+    loop do
+      username = "#{username_without_num}#{counter}"
+      break username unless Person.where.not(id: current_user.id).exists?(username: username)
+      counter += 1
+    end
+  end
+
 end

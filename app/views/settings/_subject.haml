@@ -6,7 +6,7 @@
 .js-subject-block.hidden
 
   .form-group
-    = text_field_tag "education[subjects][#{listing_id}][details]", nil, cols: 2, placeholder: 'What are specific areas you\'re really great at?', style: 'height: initial;'
+    = text_field_tag "education[subjects][#{listing_id}][subject_details]", nil, cols: 2, placeholder: 'What are specific areas you\'re really great at?', style: 'height: initial;', value: listing ? listing.answer_for(@subject_details_field).text_value : ''
 
   .form-group
     .btn-group.btn-group-justified{:data => {:toggle => "buttons"}}
